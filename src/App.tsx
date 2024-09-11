@@ -1,6 +1,6 @@
 import './App.css';
 import { useState } from 'react';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import './App.css';
 
 function App() {
@@ -21,11 +21,85 @@ function App() {
   // to the API
   // The function then waits for the new response and updates the 'response'
   // value which we then display on the page
+  // const handleSubmit = async () => {
+  //   // "i need a train, pair of socks and a pants"
+  //   const body = {
+  //     user_input: value,
+  //     metadata: {}
+  //   };
+
+  
+  //   const response = await axios.post('http://127.0.0.1:5000/product/cv', body);
+  //   const data = response["data"];
+
+  
+  //   const recommendations = data["recommendations"];
+
+  //   // const objectAsString = JSON.stringify(recommendations);
+
+  //   console.log(response);
+    
+
+  //   const formattedString = recommendations.item
+  //   .map((entry: { name: string; description: string; }) => 
+  //     `<span style="color: red;">${entry.name}</span><br /><br />${entry.description}`
+  //   )
+  //   .join("<br /><br />");
+
+    
+  //   // const response = await axios.get('http://127.0.0.1:5000');
+  //   setResponse(formattedString);
+  // };
+
   const handleSubmit = async () => {
-    const response = await axios.post('http://localhost:3005/chatbot', {
-      question: value,
-    });
-    setResponse(response.data);
+    // Prepare the request body
+    const body = {
+      user_input: value,
+      metadata: {}
+    };
+  
+    try {
+      // Make the POST request
+      const response = await axios.post('http://127.0.0.1:5000/product/cv', body);
+      const data = response.data;
+      const recommendations = data.recommendations;
+  
+      // Format the recommendations
+      const formattedString = recommendations.item
+        .map((entry: { name: string; description: string; }) => 
+          `<span style="color: red;">${entry.name}</span><br /><br />${entry.description}`
+        )
+        .join("<br /><br />");
+  
+      // Set the formatted response
+      setResponse(formattedString);
+  
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        const axiosError = error as AxiosError;
+  
+        if (axiosError.response) {
+          // Handle 404 error specifically
+          if (axiosError.response.status === 404) {
+            const errorMessage = typeof axiosError.response.data === 'string'
+              ? axiosError.response.data
+              : JSON.stringify(axiosError.response.data);
+              console.log("error message is" , errorMessage);
+              
+            setResponse(errorMessage);
+          } else {
+            // Handle other HTTP errors
+            setResponse(`HTTP Error: ${axiosError.response.status}`);
+          }
+        } else {
+          // Handle no response received or other Axios errors
+          setResponse('An error occurred while making the request');
+        }
+      } else {
+        // Handle unexpected errors
+        setResponse('An unexpected error occurred');
+      }
+    }
   };
 
   return (
@@ -37,7 +111,10 @@ function App() {
         <button onClick={handleSubmit}>Click me for answers!</button>
       </div>
       <div>
-        <p>Chatbot: {response}</p>
+        <p>Chatbot: 
+          <br /><br />
+        <span dangerouslySetInnerHTML={{ __html: response }}></span>
+        </p>
       </div>
     </div>
   );
