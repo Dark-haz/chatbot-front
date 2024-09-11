@@ -60,7 +60,7 @@ function App() {
   
     try {
       // Make the POST request
-      const response = await axios.post('http://127.0.0.1:5000/product/cv', body);
+      const response = await axios.post('http://chatbot-425506931.us-east-1.elb.amazonaws.com/product/cv', body);
       const data = response.data;
       const recommendations = data.recommendations;
   
