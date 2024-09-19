@@ -10,7 +10,7 @@ body {
 .container {
   display: flex;
   flex-direction: column;
-  align-items: flex-start; /* Aligns input to the left */
+  align-items: center; /* Aligns input to the left */
   max-width: 70em;
   margin: auto;
   margin-top: 5em;
@@ -21,14 +21,15 @@ body {
 
 .input-container {
   width: 100%;
-  max-width: 30em;
+  /* max-width: 30em; */
   margin-bottom: 1em; /* Space between input and chatbot response */
+  align-items: center;
 }
 
 .response-container {
   align-self: flex-end; /* Aligns the response to the right */
   width: 100%;
-  max-width: 35em;
+  /* max-width: 35em; */
   background-color: #ffffff;
   padding: 1em;
   border-radius: 0.25em;
@@ -49,7 +50,7 @@ input:focus {
 }
 
 button {
-  width: 100%;
+  /* width: 100%; */
   padding: 1em;
   background-color: #005858;
   color: #fff;
@@ -59,6 +60,7 @@ button {
   transition: background-color 0.3s ease-in-out;
   font-size: 1.2em;
   box-shadow: 0 0.25em 0.25em rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
 }
 
 

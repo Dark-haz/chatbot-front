@@ -34,10 +34,10 @@ function App() {
       const data = response.data;
       const recommendations = data.recommendations;
 
-      // Format the recommendations
+
       const formattedString = recommendations.item
         .map((entry: { name: string; description: string; }) =>
-          `<span style="color: red;">${entry.name}</span><br /><br />${entry.description}`
+          `<strong>Name :</strong> <span style="color: #017a7a;">${entry.name}</span><br /><strong>Description:</strong> : ${entry.description}`
         )
         .join("<br /><br />");
 
@@ -76,27 +76,34 @@ function App() {
   };
 
   return (
-    <div className='container'>
-      {/* Left Side: Input and Button */}
-      <div className='input-container'>
-        <input type='text' value={value} onChange={onChange} placeholder="Type your question..." />
+
+      <div className='container'>
+      <div className="search-header" style={{ width: '100%', textAlign: 'left', color: '#005858', padding: '.5em',  borderRadius: '5px' }}>
+  <div style={{ fontSize: '1.5em', fontWeight: 'bold', margin: '0' }}>Search Amazon Products</div>
+</div>
+
+ 
+        {/* Left Side: Input and Button */}
+        <div className='input-container'>
+          <input type='text' value={value} onChange={onChange} placeholder="Type your question..." />
+      
+        </div>
         <button
-          onClick={handleSubmit}
-          disabled={loading}
-          className={`button ${loading ? 'loading' : ''}`}
-        >
-          {loading ? 'Loading...' : 'Click me for answers!'}
-        </button>
+            onClick={handleSubmit}
+            disabled={loading}
+            className={`button ${loading ? 'loading' : ''}`}
+          >
+            {loading ? 'Loading...' : 'Click me for answers!'}
+          </button>
+        {/* Right Side: Chatbot Response */}
+        <div className='response-container'>
+          <div>
+            <img src="/assets/images/bot-icon.jpg" alt="Chatbot Icon" className="chatbot-icon" />
+          </div>
+          <span className="chatbot-response" dangerouslySetInnerHTML={{ __html: response }}></span>
+        </div>
       </div>
 
-      {/* Right Side: Chatbot Response */}
-      <div className='response-container'>
-        <div>
-          <img src="/assets/images/bot-icon.jpg" alt="Chatbot Icon" className="chatbot-icon" />
-        </div>
-        <span className="chatbot-response" dangerouslySetInnerHTML={{ __html: response }}></span>
-      </div>
-    </div>
 
   );
 }
